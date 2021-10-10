@@ -17,6 +17,10 @@ public class MyGdxGame extends ApplicationAdapter {
 	private Array<Fileira> fileiras;
 
 	private float tempoTotal;
+
+	private int indexInf;
+
+	private int pontos;
 	
 	@Override
 	public void create () {
@@ -30,10 +34,16 @@ public class MyGdxGame extends ApplicationAdapter {
 		fileiras.add(new Fileira(2*tileHeight, 2));
 
 		tempoTotal = 0;
+
+		indexInf = 0;
+
+		pontos = 0;
 	}
 
 	@Override
 	public void render () {
+		input();
+
 		update(Gdx.graphics.getDeltaTime());
 
 		Gdx.gl.glClearColor(1, 1, 1, 1);
@@ -54,12 +64,45 @@ public class MyGdxGame extends ApplicationAdapter {
 
 		velAtual = velIni + tileHeight*tempoTotal/8f;
 
-		for(Fileira f:fileiras){
-			f.update(deltaTime);
+		for(int i=0;i<fileiras.size;i++){
+			int retorno = fileiras.get(i).update(deltaTime);
+			if(retorno != 0){
+				if(retorno == 1){
+					fileiras.removeIndex(i);
+					i--;
+					indexInf--;
+					
+				}
+			}
 		}
 
 	}
 
+	private void input(){
+		if(Gdx.input.justTouched()){
+			int x = Gdx.input.getX();
+			int y = screeny - Gdx.input.getY();
+
+			for(int i=0;i<fileiras.size;i++){
+				int retorno = fileiras.get(i).toque(x, y);
+				if(retorno != 0){
+					if(retorno == 1 && i == indexInf){
+						pontos++;
+						indexInf++;
+					}else if(retorno == 1) {
+						finalizar();
+					}else {
+						finalizar();
+					}
+					break;
+				}
+			}
+		}
+	}
+
+	private void finalizar(){
+		Gdx.input.vibrate(200);
+	}
 	
 	@Override
 	public void dispose () {
