@@ -15,6 +15,8 @@ public class MyGdxGame extends ApplicationAdapter {
 	private ShapeRenderer shapeRenderer;
 
 	private Array<Fileira> fileiras;
+
+	private float tempoTotal;
 	
 	@Override
 	public void create () {
@@ -27,10 +29,13 @@ public class MyGdxGame extends ApplicationAdapter {
 		fileiras.add(new Fileira(tileHeight, 1));
 		fileiras.add(new Fileira(2*tileHeight, 2));
 
+		tempoTotal = 0;
 	}
 
 	@Override
 	public void render () {
+		update(Gdx.graphics.getDeltaTime());
+
 		Gdx.gl.glClearColor(1, 1, 1, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -43,6 +48,18 @@ public class MyGdxGame extends ApplicationAdapter {
 		shapeRenderer.end();
 
 	}
+
+	private void update(float deltaTime){
+		tempoTotal += deltaTime;
+
+		velAtual = velIni + tileHeight*tempoTotal/8f;
+
+		for(Fileira f:fileiras){
+			f.update(deltaTime);
+		}
+
+	}
+
 	
 	@Override
 	public void dispose () {

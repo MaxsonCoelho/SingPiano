@@ -28,4 +28,9 @@ public class Fileira {
             shapeRenderer.rect(i*tileWidth, y, tileWidth, tileHeight);
         }
     }
+
+    public void update(float time){
+        y -= time*velAtual;
+    }
+
 }

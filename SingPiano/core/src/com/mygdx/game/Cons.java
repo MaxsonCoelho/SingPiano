@@ -12,4 +12,7 @@ public class Cons {
     public static int tileWidth = screenx/4;
     public static int tileHeight = screeny/4;
 
+    public static float velIni = 2*tileHeight/1f;
+    public static float velAtual = 0;
+
 }
