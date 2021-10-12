@@ -10,6 +10,8 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import static com.mygdx.game.Cons.*;
 
+import java.util.Random;
+
 public class MyGdxGame extends ApplicationAdapter {
 
 	private ShapeRenderer shapeRenderer;
@@ -21,6 +23,10 @@ public class MyGdxGame extends ApplicationAdapter {
 	private int indexInf;
 
 	private int pontos;
+
+	private Random rand;
+
+	private int estado;
 	
 	@Override
 	public void create () {
@@ -29,15 +35,9 @@ public class MyGdxGame extends ApplicationAdapter {
 
 		fileiras = new Array<Fileira>();
 
-		fileiras.add(new Fileira(0, 0));
-		fileiras.add(new Fileira(tileHeight, 1));
-		fileiras.add(new Fileira(2*tileHeight, 2));
+		rand = new Random();
 
-		tempoTotal = 0;
-
-		indexInf = 0;
-
-		pontos = 0;
+		iniciar();
 	}
 
 	@Override
@@ -60,48 +60,83 @@ public class MyGdxGame extends ApplicationAdapter {
 	}
 
 	private void update(float deltaTime){
-		tempoTotal += deltaTime;
+		if(estado == 1){
+			tempoTotal += deltaTime;
 
-		velAtual = velIni + tileHeight*tempoTotal/8f;
+			velAtual = velIni + tileHeight*tempoTotal/8f;
 
-		for(int i=0;i<fileiras.size;i++){
-			int retorno = fileiras.get(i).update(deltaTime);
-			if(retorno != 0){
-				if(retorno == 1){
-					fileiras.removeIndex(i);
-					i--;
-					indexInf--;
-					
+			for(int i=0;i<fileiras.size;i++){
+				int retorno = fileiras.get(i).update(deltaTime);
+				if(retorno != 0){
+					if(retorno == 1){
+						fileiras.removeIndex(i);
+						i--;
+						indexInf--;
+						adicionar();
+					}else if(retorno == 2){
+						finalizar(1);
+					}
 				}
 			}
 		}
-
 	}
 
 	private void input(){
 		if(Gdx.input.justTouched()){
 			int x = Gdx.input.getX();
 			int y = screeny - Gdx.input.getY();
-
-			for(int i=0;i<fileiras.size;i++){
-				int retorno = fileiras.get(i).toque(x, y);
-				if(retorno != 0){
-					if(retorno == 1 && i == indexInf){
-						pontos++;
-						indexInf++;
-					}else if(retorno == 1) {
-						finalizar();
-					}else {
-						finalizar();
+			if(estado == 0){
+				estado = 1;
+			}
+			if(estado == 1){
+				for(int i=0;i<fileiras.size;i++){
+					int retorno = fileiras.get(i).toque(x, y);
+					if(retorno != 0){
+						if(retorno == 1 && i == indexInf){
+							pontos++;
+							indexInf++;
+						}else if(retorno == 1) {
+							finalizar(0);
+						}else {
+							finalizar(0);
+						}
+						break;
 					}
-					break;
 				}
 			}
+			if(estado == 2) iniciar();
 		}
 	}
 
-	private void finalizar(){
+	private void adicionar(){
+		float y = fileiras.get(fileiras.size-1).y + tileHeight;
+		fileiras.add(new Fileira(y, rand.nextInt(4)));
+	}
+
+	private void iniciar(){
+		tempoTotal = 0;
+		indexInf = 0;
+		pontos = 0;
+
+		fileiras.clear();
+		fileiras.add(new Fileira(tileHeight, rand.nextInt(4)));
+		adicionar();
+		adicionar();
+		adicionar();
+		adicionar();
+
+		estado = 0;
+	}
+
+	private void finalizar(int opt){
+
 		Gdx.input.vibrate(200);
+		estado = 2;
+		if(opt == 1){
+			for(Fileira f:fileiras){
+				f.y += tileHeight;
+			}
+		}
 	}
 	
 	@Override

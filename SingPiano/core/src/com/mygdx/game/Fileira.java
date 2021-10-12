@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import static com.mygdx.game.Cons.*;
 
 public class Fileira {
-    private float y;
+    public float y;
 
     private int correta;
 
@@ -48,8 +48,8 @@ public class Fileira {
     }
 
     public int toque(int tx, int ty){
-        if(ty >= y && ty <= y +tileHeight){
-            pos = tx/tileHeight;
+        if(ty >= y && ty <= y + tileHeight){
+            pos = tx/tileWidth;
             if(pos == correta){
                 ok = true;
                 return 1;
