@@ -67,6 +67,7 @@ public class MyGdxGame extends ApplicationAdapter {
 
 			for(int i=0;i<fileiras.size;i++){
 				int retorno = fileiras.get(i).update(deltaTime);
+				fileiras.get(i).anim(deltaTime);
 				if(retorno != 0){
 					if(retorno == 1){
 						fileiras.removeIndex(i);
@@ -77,6 +78,10 @@ public class MyGdxGame extends ApplicationAdapter {
 						finalizar(1);
 					}
 				}
+			}
+		}else if(estado == 2){
+			for(Fileira f:fileiras){
+				f.anim(deltaTime);
 			}
 		}
 	}
@@ -96,6 +101,7 @@ public class MyGdxGame extends ApplicationAdapter {
 							pontos++;
 							indexInf++;
 						}else if(retorno == 1) {
+							fileiras.get(indexInf).erro();
 							finalizar(0);
 						}else {
 							finalizar(0);
@@ -103,8 +109,7 @@ public class MyGdxGame extends ApplicationAdapter {
 						break;
 					}
 				}
-			}
-			if(estado == 2) iniciar();
+			}else if(estado == 2) iniciar();
 		}
 	}
 
