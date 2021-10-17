@@ -31,6 +31,8 @@ public class MyGdxGame extends ApplicationAdapter {
 	private SpriteBatch batch;
 
 	private Texture textIniciar;
+
+	private Piano piano;
 	
 	@Override
 	public void create () {
@@ -44,6 +46,8 @@ public class MyGdxGame extends ApplicationAdapter {
 		rand = new Random();
 
 		textIniciar = new Texture("iniciar.png");
+
+		piano = new Piano("natal");
 
 		iniciar();
 	}
@@ -114,6 +118,7 @@ public class MyGdxGame extends ApplicationAdapter {
 						if(retorno == 1 && i == indexInf){
 							pontos++;
 							indexInf++;
+							piano.tocar();
 						}else if(retorno == 1) {
 							fileiras.get(indexInf).erro();
 							finalizar(0);
@@ -145,6 +150,8 @@ public class MyGdxGame extends ApplicationAdapter {
 		adicionar();
 
 		estado = 0;
+
+		piano.reset();
 	}
 
 	private void finalizar(int opt){
@@ -163,5 +170,6 @@ public class MyGdxGame extends ApplicationAdapter {
 		shapeRenderer.dispose();
 		batch.dispose();
 		textIniciar.dispose();
+		piano.dispose();
 	}
 }
