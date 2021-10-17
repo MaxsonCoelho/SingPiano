@@ -26,7 +26,7 @@ public class Piano {
         sounds = new HashMap<String, Sound>();
         for(String s:notas){
             if(!sounds.containsKey(s)){
-                sounds.put(s, Gdx.audio.newSound(Gdx.files.internal("sons/" + s + ".wav")));
+                sounds.put(s, Gdx.audio.newSound(Gdx.files.internal("sons/" + s + ".mp3")));
             }
         }
     }
