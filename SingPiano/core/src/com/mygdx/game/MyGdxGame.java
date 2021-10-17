@@ -27,15 +27,23 @@ public class MyGdxGame extends ApplicationAdapter {
 	private Random rand;
 
 	private int estado;
+
+	private SpriteBatch batch;
+
+	private Texture textIniciar;
 	
 	@Override
 	public void create () {
 		shapeRenderer = new ShapeRenderer();
 		shapeRenderer.setAutoShapeType(true);
 
+		batch = new SpriteBatch();
+
 		fileiras = new Array<Fileira>();
 
 		rand = new Random();
+
+		textIniciar = new Texture("iniciar.png");
 
 		iniciar();
 	}
@@ -56,7 +64,13 @@ public class MyGdxGame extends ApplicationAdapter {
 		}
 
 		shapeRenderer.end();
+		if(estado == 0){
+			batch.begin();
 
+			batch.draw(textIniciar, 0, tileHeight/4, screenx, tileHeight/2);
+
+			batch.end();
+		}
 	}
 
 	private void update(float deltaTime){
@@ -147,5 +161,7 @@ public class MyGdxGame extends ApplicationAdapter {
 	@Override
 	public void dispose () {
 		shapeRenderer.dispose();
+		batch.dispose();
+		textIniciar.dispose();
 	}
 }
