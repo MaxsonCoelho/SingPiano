@@ -7,7 +7,6 @@ import com.badlogic.gdx.utils.Array;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.FileHandler;
 
 public class Piano {
 

@@ -4,6 +4,8 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Array;
@@ -33,7 +35,11 @@ public class MyGdxGame extends ApplicationAdapter {
 	private Texture textIniciar;
 
 	private Piano piano;
-	
+
+	private BitmapFont fonte;
+
+	private GlyphLayout glyphLayout;
+
 	@Override
 	public void create () {
 		shapeRenderer = new ShapeRenderer();
@@ -48,6 +54,8 @@ public class MyGdxGame extends ApplicationAdapter {
 		textIniciar = new Texture("iniciar.png");
 
 		piano = new Piano("natal");
+
+		glyphLayout = new GlyphLayout();
 
 		iniciar();
 	}
@@ -172,4 +180,4 @@ public class MyGdxGame extends ApplicationAdapter {
 		textIniciar.dispose();
 		piano.dispose();
 	}
-}
+
